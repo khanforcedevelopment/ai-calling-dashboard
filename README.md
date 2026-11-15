@@ -37,7 +37,7 @@ Built with Next.js, Supabase (database) and the Vapi API. The Vapi key stays on 
 
 Optional: `CALLS_PER_MINUTE` (default 5), `BUSINESS_HOURS_START` (9), `BUSINESS_HOURS_END` (18), `BUSINESS_HOURS_ENFORCED` (true).
 
-3. Click **Deploy**. Open the URL Vercel gives you and log in with your password.
+3. Click **Deploy**. Open the URL Vercel gives you and log in with username `admin` and your DASHBOARD_PASSWORD. Create more logins on the **Users** page.
 
 If you change an environment variable later: Vercel → project → **Deployments** → latest → **⋯ → Redeploy**.
 

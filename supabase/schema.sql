@@ -60,6 +60,18 @@ create table if not exists dnc (
   created_at timestamptz not null default now()
 );
 
+-- Extra dashboard logins (the main "admin" login uses DASHBOARD_PASSWORD)
+create table if not exists users (
+  id uuid primary key default gen_random_uuid(),
+  name text,
+  username text not null unique,
+  password_hash text not null,
+  role text not null default 'user',
+  active boolean not null default true,
+  created_at timestamptz not null default now()
+);
+alter table users enable row level security;
+
 -- Lock tables: only the server (service role key) can read/write.
 alter table scripts enable row level security;
 alter table campaigns enable row level security;
