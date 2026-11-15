@@ -134,7 +134,7 @@ export default function CampaignPage() {
       </div>
 
       <div className="card">
-        <CallTable calls={calls} />
+        <CallTable calls={calls} onRefresh={load} />
       </div>
     </>
   );

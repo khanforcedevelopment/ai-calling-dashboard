@@ -73,7 +73,7 @@ export default function CallsPage() {
           <span className="hint">{total} calls</span>
         </form>
 
-        <CallTable calls={calls} showCampaign />
+        <CallTable calls={calls} showCampaign onRefresh={load} />
 
         {pages > 1 && (
           <div className="row" style={{ marginTop: 12, justifyContent: 'flex-end' }}>

@@ -1,7 +1,7 @@
 'use client';
 
 import { Fragment, useState } from 'react';
-import { fmtTime, fmtDuration, STATUS_LABELS, statusTone, outcome } from '@/lib/format';
+import { fmtTime, fmtDuration, STATUS_LABELS, statusTone, outcome, api } from '@/lib/format';
 
 const LABELS = {
   intent: 'Intent',
@@ -28,8 +28,18 @@ function show(v) {
   return typeof v === 'object' ? JSON.stringify(v) : String(v);
 }
 
-export function CallDetail({ call }) {
+export function CallDetail({ call, onRefresh }) {
+  const [busy, setBusy] = useState(false);
   const data = call.structured_data || {};
+
+  async function refreshCall() {
+    setBusy(true);
+    try {
+      await api(`/api/sync?callId=${call.id}`, { method: 'POST' });
+      if (onRefresh) await onRefresh();
+    } catch {}
+    setBusy(false);
+  }
   const fields = Object.entries(data)
     .map(([k, v]) => [LABELS[k] || k, show(v)])
     .filter(([, v]) => v !== null);
@@ -37,10 +47,26 @@ export function CallDetail({ call }) {
   return (
     <div className="grid two">
       <div>
-        {call.recording_url && (
+        <div className="field">
+          <label>Recording</label>
+          {call.recording_url ? (
+            <>
+              <audio controls preload="metadata" src={call.recording_url} style={{ width: '100%' }} />
+              <div className="hint">
+                <a href={call.recording_url} target="_blank" rel="noreferrer">Open recording in a new tab</a>
+              </div>
+            </>
+          ) : (
+            <div className="hint">
+              {call.vapi_call_id ? 'No recording yet. It usually appears within a minute after the call ends.' : 'This call was not placed.'}
+            </div>
+          )}
+        </div>
+        {call.vapi_call_id && (
           <div className="field">
-            <label>Recording</label>
-            <audio controls preload="none" src={call.recording_url} style={{ width: '100%' }} />
+            <button type="button" className="btn ghost small" onClick={refreshCall} disabled={busy}>
+              {busy ? 'Refreshing…' : 'Refresh from Vapi'}
+            </button>
           </div>
         )}
         {call.summary && (
@@ -75,7 +101,7 @@ export function CallDetail({ call }) {
   );
 }
 
-export default function CallTable({ calls, showCampaign = false }) {
+export default function CallTable({ calls, showCampaign = false, onRefresh }) {
   const [open, setOpen] = useState(null);
   if (!calls.length) return <div className="empty">No calls yet.</div>;
   const cols = showCampaign ? 8 : 7;
@@ -116,7 +142,7 @@ export default function CallTable({ calls, showCampaign = false }) {
                 {isOpen && (
                   <tr>
                     <td colSpan={cols} className="detail">
-                      <CallDetail call={c} />
+                      <CallDetail call={c} onRefresh={onRefresh} />
                     </td>
                   </tr>
                 )}
