@@ -17,7 +17,7 @@ export default function ScriptSelect({ value, onChange }) {
     <div className="field">
       <label htmlFor="script">Script</label>
       <select id="script" value={value || ''} onChange={(e) => onChange(e.target.value || null)}>
-        <option value="">Assistant default (as set in Vapi)</option>
+        <option value="">Default script</option>
         {scripts.map((s) => (
           <option key={s.id} value={s.id}>
             {s.name}

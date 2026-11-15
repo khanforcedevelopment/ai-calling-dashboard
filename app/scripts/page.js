@@ -30,7 +30,7 @@ export default function ScriptsPage() {
         {!scripts ? (
           <div className="empty">Loading…</div>
         ) : !scripts.length ? (
-          <div className="empty">No scripts yet. Calls will use the assistant's default script from Vapi.</div>
+          <div className="empty">No scripts yet. Calls will use the default script.</div>
         ) : (
           <table>
             <thead>

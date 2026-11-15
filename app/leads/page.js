@@ -33,7 +33,7 @@ function flatten(lead) {
     campaign: lead.campaigns?.name || '',
     call_time: lead.ended_at || '',
     summary: lead.summary || '',
-    recording_url: lead.recording_url || '',
+    recording_url: lead.recording_url ? `${window.location.origin}/api/recording/${lead.id}` : '',
   };
 }
 

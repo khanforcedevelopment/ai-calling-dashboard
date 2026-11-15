@@ -72,14 +72,14 @@ export default function ScriptEditor() {
           <label htmlFor="fm">First message</label>
           <textarea id="fm" value={form.first_message} onChange={(e) => setForm({ ...form, first_message: e.target.value })} placeholder="Hello, good afternoon! This is Ali, an AI assistant calling from …" />
           <div className="hint">
-            The first thing the AI says when the call is answered. Use <code>{'{{greeting}}'}</code> for good morning / afternoon / evening (UAE time) and <code>{'{{name}}'}</code> for the contact's name. Leave empty to use the one set in Vapi.
+            The first thing the AI says when the call is answered. Use <code>{'{{greeting}}'}</code> for good morning / afternoon / evening (UAE time) and <code>{'{{name}}'}</code> for the contact's name. Leave empty to use the default.
           </div>
         </div>
         <div className="field">
           <label htmlFor="sp">System prompt (instructions)</label>
           <textarea id="sp" className="tall" value={form.system_prompt} onChange={(e) => setForm({ ...form, system_prompt: e.target.value })} placeholder="You are Ali, a friendly and professional AI voice assistant…" />
           <div className="hint">
-            How the AI should behave, the call flow and the rules. Use <code>{'{{name}}'}</code> to insert the contact's name from the CSV. Leave empty to use the prompt set in Vapi.
+            How the AI should behave, the call flow and the rules. Use <code>{'{{name}}'}</code> to insert the contact's name from the CSV. Leave empty to use the default.
           </div>
         </div>
       </div>

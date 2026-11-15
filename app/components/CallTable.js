@@ -2,6 +2,7 @@
 
 import { Fragment, useState } from 'react';
 import { fmtTime, fmtDuration, STATUS_LABELS, statusTone, outcome, api } from '@/lib/format';
+import useMe from './useMe';
 
 const LABELS = {
   intent: 'Intent',
@@ -30,7 +31,9 @@ function show(v) {
 
 export function CallDetail({ call, onRefresh }) {
   const [busy, setBusy] = useState(false);
+  const me = useMe();
   const data = call.structured_data || {};
+  const recording = `/api/recording/${call.id}`;
 
   async function refreshCall() {
     setBusy(true);
@@ -51,9 +54,9 @@ export function CallDetail({ call, onRefresh }) {
           <label>Recording</label>
           {call.recording_url ? (
             <>
-              <audio controls preload="metadata" src={call.recording_url} style={{ width: '100%' }} />
+              <audio controls preload="metadata" src={recording} style={{ width: '100%' }} />
               <div className="hint">
-                <a href={call.recording_url} target="_blank" rel="noreferrer">Open recording in a new tab</a>
+                <a href={recording} target="_blank" rel="noreferrer">Open recording in a new tab</a>
               </div>
             </>
           ) : (
@@ -65,7 +68,7 @@ export function CallDetail({ call, onRefresh }) {
         {call.vapi_call_id && (
           <div className="field">
             <button type="button" className="btn ghost small" onClick={refreshCall} disabled={busy}>
-              {busy ? 'Refreshing…' : 'Refresh from Vapi'}
+              {busy ? 'Refreshing…' : 'Refresh call details'}
             </button>
           </div>
         )}
@@ -90,7 +93,8 @@ export function CallDetail({ call, onRefresh }) {
         )}
         {call.error && <div className="alert error">{call.error}</div>}
         <div className="hint">
-          Ended reason: {call.ended_reason || '—'} · Cost: {call.cost != null ? `$${Number(call.cost).toFixed(3)}` : '—'}
+          Ended reason: {call.ended_reason || '—'}
+          {me?.role === 'admin' && <> · Cost: {call.cost != null ? `$${Number(call.cost).toFixed(3)}` : '—'}</>}
         </div>
       </div>
       <div>

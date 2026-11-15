@@ -27,7 +27,7 @@ export default function CampaignPage() {
     }
   }, [id]);
 
-  // Send pending calls to Vapi in small batches.
+  // Send pending calls in small batches.
   const dispatch = useCallback(async () => {
     if (dispatchingRef.current) return;
     dispatchingRef.current = true;
@@ -88,7 +88,7 @@ export default function CampaignPage() {
       duration_seconds: c.duration_seconds ?? '',
       summary: c.summary || '',
       details: c.structured_data ? JSON.stringify(c.structured_data) : '',
-      recording_url: c.recording_url || '',
+      recording: c.recording_url ? `${window.location.origin}/api/recording/${c.id}` : '',
     })));
   }
 
@@ -124,7 +124,7 @@ export default function CampaignPage() {
       <div className="card" style={{ marginTop: 16 }}>
         <div className="row" style={{ marginBottom: 8 }}>
           <b>{done} / {total} finished</b>
-          {dispatching && <span className="badge live">Sending calls to Vapi… keep this page open</span>}
+          {dispatching && <span className="badge live">Starting calls… keep this page open</span>}
           <div className="spacer" />
           {Object.entries(counts).map(([s, n]) => (
             <span key={s} className="badge muted">{STATUS_LABELS[s] || s}: {n}</span>
