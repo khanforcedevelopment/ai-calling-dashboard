@@ -71,7 +71,9 @@ export default function ScriptEditor() {
         <div className="field">
           <label htmlFor="fm">First message</label>
           <textarea id="fm" value={form.first_message} onChange={(e) => setForm({ ...form, first_message: e.target.value })} placeholder="Hello, good afternoon! This is Ali, an AI assistant calling from …" />
-          <div className="hint">The first thing the AI says when the call is answered. Leave empty to use the one set in Vapi.</div>
+          <div className="hint">
+            The first thing the AI says when the call is answered. Use <code>{'{{greeting}}'}</code> for good morning / afternoon / evening (UAE time) and <code>{'{{name}}'}</code> for the contact's name. Leave empty to use the one set in Vapi.
+          </div>
         </div>
         <div className="field">
           <label htmlFor="sp">System prompt (instructions)</label>
